@@ -69,7 +69,7 @@ Deals are posted to your Discord channel via webhook in this format:
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/mk-car-tracker.git
+git clone https://github.com/DimitarKlifov/mk-car-tracker.git
 cd mk-car-tracker
 
 # Install dependencies
