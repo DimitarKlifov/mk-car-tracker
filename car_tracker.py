@@ -160,8 +160,9 @@ def check_deal(conn, car, mode):
         WHERE make = ? AND model = ?
         AND year BETWEEN ? AND ?
         AND km BETWEEN ? AND ?
+        AND listing_url != ?
     """, (car['make'].title(), car['model'].title(), car['year'] - 2, car['year'] + 2,
-          car['km'] - 50000, car['km'] + 50000)).fetchall()
+          car['km'] - 50000, car['km'] + 50000, car['listing_url'])).fetchall()
 
     count = len(rows)
     if count < 5:
