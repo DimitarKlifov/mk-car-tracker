@@ -9,6 +9,17 @@
 My father and I wanted to get into car flipping, but spotting underpriced listings on Reklama5.mk meant refreshing the site manually all day. I built this tool to do that automatically — scraping the full market, scoring every deal against real price data, and alerting us on Discord the moment something worth buying appears.
 
 ---
+## 📊 Results
+Running the tracker regularly between March and September 2026:
+- **15,000+ listings** collected across **54 makes** and **1,000+ models**
+- **861 deals flagged**, priced on average **~33% (≈ €2,500) below** the median of comparable cars
+
+<!-- Screenshots: add images to a screenshots/ folder and uncomment these lines
+![Discord alert](screenshots/discord-alert.png)
+![Console output](screenshots/console-output.png)
+-->
+
+---
 ## ✨ Features
 - **Full market scraping** — crawls every car listing on Reklama5.mk across all pages
 - **Smart deal scoring** — compares each listing against a trimmed median of similar cars (same make, model, ±2 years, ±50,000 km)
@@ -92,6 +103,19 @@ Two tables are created automatically in `cars.db`:
 | deal_score, confidence | INTEGER |
 | listing_url | TEXT (unique) |
 | date_found | TEXT |
+---
+## ⚠️ Known Limitations
+- **Site access** — Reklama5.mk now protects its search pages with Cloudflare, which blocks automated requests (HTTP 403). The scraper detects this and stops with a clear message instead of crashing.
+- **Placeholder prices** — some sellers list symbolic prices (e.g. 666€, 777€, 1111€) instead of the real one. These pass the minimum price filter and can show up as false "deals".
+- **HTML parsing** — the scraper depends on Reklama5's page structure; if the site layout changes, the CSS selectors need to be updated.
+
+## 🔭 Future Improvements
+- Filter out placeholder prices (repeated digits, round "call me" values)
+- Track price history per listing to detect price drops
+- Run on a schedule (cron / Task Scheduler) instead of manually
+- Simple web dashboard to browse deals and market prices
+- Unit tests for the parsing and scoring logic
+
 ---
 ## 📄 License
 MIT — see [LICENSE](LICENSE) for details.
