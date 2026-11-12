@@ -72,7 +72,7 @@ export DISCORD_WEBHOOK="https://discord.com/api/webhooks/..."
 ```
 Then open a **new terminal** and run:
 ```bash
-python scraper.py
+python car_tracker.py
 ```
 ---
 ## 📁 Database Schema
