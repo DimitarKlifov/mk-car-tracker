@@ -139,7 +139,7 @@ def send_deal_alert(car, median_price, deal_score, confidence):
     saving = median_price - car['price']
     saving_pct = round((saving / median_price) * 100)
     message = (
-        f"🔥 Score: {deal_score} | Confidence: {confidence}% | {car['make']} {car['model']} {car['year']}\n"
+        f"🔥 Score: {deal_score} | Confidence: {confidence}% | {car['make']} {car['model'].title()} {car['year']}\n"
         f"💰 {car['price']}€ — saves {saving}€ ({saving_pct}% below median {median_price}€)\n"
         f"📍 {car['km']}km | {car['date_posted']}\n"
         f"🔗 {car['listing_url']}"
@@ -261,7 +261,8 @@ def parse_listing(title, desc_div, price):
     listing_url = "https://reklama5.mk" + title["href"]
 
     date_span = desc_div.find("span", style=lambda s: s and "float:right" in s.replace(" ", ""))
-    listing_date = date_span.text.strip().replace("\n", " ") if date_span else None
+    # collapse line breaks and indentation, e.g. "Вчера\n    18:22" -> "Вчера 18:22"
+    listing_date = " ".join(date_span.text.split()) if date_span else None
 
     p = desc_div.find("p")
     if not p:
@@ -317,17 +318,20 @@ def main():
     mode = ask_mode()
     conn = init_db()
 
-    if CLEAR_DISCORD_ON_START:
-        clear_discord()
-
     page = 1
     total_scraped = total_inserted = total_deals = 0
+    stopped_early = False
 
     while True:
         soup = fetch_page(page)
         if soup is None:
             print(f"Stopping: page {page} could not be downloaded.")
+            stopped_early = True
             break
+
+        # only separate runs in Discord once we know the site is reachable
+        if page == 1 and CLEAR_DISCORD_ON_START:
+            clear_discord()
 
         titles_car = soup.find_all("a", attrs={"class": "SearchAdTitle"})
         car_desc_divs = soup.find_all("div", attrs={"class": "ad-desc-div"})
@@ -354,7 +358,11 @@ def main():
 
     conn.commit()
     conn.close()
-    print(f"Scraping Done! Scraped: {total_scraped} | Inserted: {total_inserted} | Deals found: {total_deals}")
+    summary = f"Scraped: {total_scraped} | Inserted: {total_inserted} | Deals found: {total_deals}"
+    if stopped_early:
+        print(f"Stopped early after {page - 1} page(s). {summary}")
+    else:
+        print(f"Scraping Done! {summary}")
 
 
 if __name__ == "__main__":
