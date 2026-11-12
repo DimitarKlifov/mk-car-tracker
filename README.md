@@ -14,8 +14,11 @@ Running the tracker regularly between March and September 2026:
 - **15,000+ listings** collected across **54 makes** and **1,000+ models**
 - **861 deals flagged**, priced on average **~33% (≈ €2,500) below** the median of comparable cars
 
-<!-- Screenshots: add images to a screenshots/ folder and uncomment these lines
-![Discord alert](screenshots/discord-alert.png)
+**Real Discord alerts from a run:**
+
+![Discord deal alerts](screenshots/discord-alerts.png)
+
+<!-- TODO: add a console screenshot and uncomment
 ![Console output](screenshots/console-output.png)
 -->
 
