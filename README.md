@@ -59,7 +59,7 @@ Deals are posted to your Discord channel via webhook in this format:
 git clone https://github.com/DimitarKlifov/mk-car-tracker.git
 cd mk-car-tracker
 # Install dependencies
-pip install requests beautifulsoup4
+pip install -r requirements.txt
 ```
 Set your Discord webhook as an environment variable:
 ```cmd
